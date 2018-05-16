@@ -7,6 +7,7 @@ import com.example.user.cr_client.backend.DB_manager;
 import com.example.user.cr_client.entities.Branch;
 import com.example.user.cr_client.entities.Car;
 import com.example.user.cr_client.entities.Customer;
+import com.example.user.cr_client.entities.Order;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,6 +44,7 @@ public class MySQL_DBManager implements DB_manager {
         }
         return null;
     }
+
 
 
     @Override
@@ -238,6 +240,56 @@ public class MySQL_DBManager implements DB_manager {
         {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public boolean updateCarKl(Order order)
+    {
+        // TODO: 16/05/2018  
+        return false;
+    }
+
+    @Override
+    public List<Car> getAvailableCar() {
+       //// TODO: 16/05/2018  
+        return null;
+    }
+
+    @Override
+    public List<Car> getAvailableCarOfBranch() {
+      //// TODO: 16/05/2018  
+        return null;
+    }
+
+    @Override
+    public List<String> getModels() {
+        // TODO: 16/05/2018  
+        return null;
+    }
+
+    @Override
+    public List<Order> getAllOpenOrders() {
+        // TODO: 16/05/2018  
+        return null;
+    }
+
+    @Override
+    public Boolean openOrder(Order order) {
+        // TODO: 16/05/2018  
+        return null;
+        
+    }
+
+    @Override
+    public Boolean closeOrder(Order order) {
+        // TODO: 16/05/2018  
+        return null;
+    }
+
+    @Override
+    public Boolean closedAtLastSeconds() {
+        // TODO: 16/05/2018  
         return null;
     }
 }
