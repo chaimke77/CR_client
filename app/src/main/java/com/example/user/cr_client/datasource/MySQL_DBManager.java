@@ -290,6 +290,7 @@ public class MySQL_DBManager implements DB_manager {
     @Override
     public Boolean closedAtLastSeconds() {
         // TODO: 16/05/2018  
+
         return null;
     }
 }
