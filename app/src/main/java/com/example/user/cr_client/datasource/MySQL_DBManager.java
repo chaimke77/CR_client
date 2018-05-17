@@ -9,9 +9,14 @@ import com.example.user.cr_client.entities.Branch;
 import com.example.user.cr_client.entities.Car;
 import com.example.user.cr_client.entities.Customer;
 import com.example.user.cr_client.entities.Order;
+import com.example.user.cr_client.entities.StatusOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +32,7 @@ public class MySQL_DBManager implements DB_manager {
     private String WEB_URL ="http://crottenb.vlab.jct.ac.il/CR/";
     private List<Customer> customerList;
     private List<Branch> branchList;
+    private List<Order> orderList;
 
     private List<Car> carList;
 
@@ -34,6 +40,7 @@ public class MySQL_DBManager implements DB_manager {
         customerList = getAllCustomers();
         branchList = getAllBrunches();
         carList = getAllCars();
+        orderList = getAllOpenOrders();
     }
 
 
@@ -77,7 +84,27 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public boolean addCustomer(Customer values) {
-        return false;
+        try {
+
+            if(custumerExsits(values)==true)
+                return false;
+            String url = WEB_URL + "addCustomer.php" ;
+
+            final ContentValues v = new ContentValues();
+            v.put( "_id", values.getId() );
+            v.put( "first_name", values.getFirstName() );
+            v.put( "last_name", values.getLastName() );
+            v.put( "phoneNumber", values.getPhoneNumber() );
+            v.put( "email", values.getEmail() );
+            v.put( "creditCard", values.getCreditCard() );
+
+            PHPtools.POST( url, v );
+
+        } catch (Exception e) {
+            //Log.w( Constants.Log.APP_LOG, e.getMessage() );
+        }
+        customerList.add(values);
+        return true;
     }
 
     @Override
@@ -195,13 +222,15 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public List<Car> getAvailableCarOnKm() {
-        // TODO: 16/05/2018
-        return null;
+           return null;
     }
 
     @Override
     public List<String> getAllModel() {
-        // TODO: 16/05/2018
+        List<String> models = new ArrayList<>();
+        for(Car item:carList){
+           // models.add(item.getModel());
+        }
         return null;
     }
 
@@ -214,28 +243,72 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public List<Order> getAllOpenOrders() {
-        // TODO: 16/05/2018  
+        if(orderList != null)
+            return orderList;
+        List<Order> result = new ArrayList<Order>();
+        try
+        {
+            String str = PHPtools.GET(WEB_URL + "/getOrder.php");
+            JSONArray array = new JSONObject(str).getJSONArray("orders");
+            for (int i = 0; i < array.length(); i++)
+            {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+
+                JSONObject jsonObject = array.getJSONObject(i);
+                Order order = new Order();
+                order.setOrderNum(jsonObject.getInt("_id"));
+                order.setCustomerNum(jsonObject.getString("id_customer"));
+                order.setNumOfCars(jsonObject.getLong("numCar"));
+                order.setKilometerStart(jsonObject.getInt("km_start"));
+                order.setRentalStart(formatter.parse(jsonObject.getString("date_start")));
+                result.add(order);
+            }
+            return result;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
-    public Boolean openOrder(Order order) {
-        // TODO: 16/05/2018  
-        return null;
+    public Boolean openOrder(Order values) {
+        try {
+
+
+            String url = WEB_URL + "addCOrders.php" ;
+
+            final ContentValues v = new ContentValues();
+            v.put( "_id", values.getOrderNum() );
+            v.put( "id_customer", values.getCustomerNum() );
+            v.put( "status", values.getStatus().toString());
+            v.put( "numCar", values.getNumOfCars() );
+            v.put( "km_start", values.getKilometerStart() );
+            v.put( "date_start", values.getRentalStart().toString());
+
+            PHPtools.POST( url, v );
+
+        } catch (Exception e) {
+            //Log.w( Constants.Log.APP_LOG, e.getMessage() );
+        }
+        orderList.add(values);
+        return true;
         
     }
 
     @Override
     public Boolean closeOrder(Order order) {
-        // TODO: 16/05/2018  
+        List<Order> orders = getAllOpenOrders();
+        for(Order item:orders)
+            if(order.getOrderNum()==item.getOrderNum())
+
         return null;
     }
 
 
     @Override
     public Boolean closedAtLastTenSeconds() {
-        // TODO: 16/05/2018  
-
+        // TODO: 16/05/2018
         return null;
     }
 }
