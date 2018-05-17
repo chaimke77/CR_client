@@ -9,7 +9,7 @@ import java.util.Date;
 public class Order {
     private String customerNum;
     private StatusOrder status;
-    private int numOfCars;
+    private Long numOfCars;
     private Date rentalStart;
     private Date rentalFinish;
     private long kilometerStart;
@@ -22,7 +22,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(String customerNum, StatusOrder status, int numOfCars, Date rentalStart, Date rentalFinish, long kilometerStart, long kilometerFinish, boolean fuel, int liter, int billing, long orderNum) {
+    public Order(String customerNum, StatusOrder status, Long numOfCars, Date rentalStart, Date rentalFinish, long kilometerStart, long kilometerFinish, boolean fuel, int liter, int billing, long orderNum) {
         this.customerNum = customerNum;
         this.status = status;
         this.numOfCars = numOfCars;
@@ -50,11 +50,11 @@ public class Order {
         this.status = status;
     }
 
-    public int getNumOfCars() {
+    public Long getNumOfCars() {
         return numOfCars;
     }
 
-    public void setNumOfCars(int numOfCars) {
+    public void setNumOfCars(Long numOfCars) {
         this.numOfCars = numOfCars;
     }
 

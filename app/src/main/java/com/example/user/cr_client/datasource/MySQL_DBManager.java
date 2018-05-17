@@ -3,6 +3,7 @@ package com.example.user.cr_client.datasource;
 import android.content.ContentValues;
 
 
+import com.example.user.cr_client.backend.DBManagerFactory;
 import com.example.user.cr_client.backend.DB_manager;
 import com.example.user.cr_client.entities.Branch;
 import com.example.user.cr_client.entities.Car;
@@ -40,6 +41,22 @@ public class MySQL_DBManager implements DB_manager {
     public Customer ReturnCustumerById(String values) {
         for (Customer item:customerList) {
             if(item.getId().equals(values) )
+                return item;
+        }
+        return null;
+    }
+    @Override
+    public Car ReturnCarById(Long values) {
+        for (Car item:carList) {
+            if(item.getCarNumber()==values )
+                return item;
+        }
+        return null;
+    }
+    @Override
+    public Branch ReturnBranchByName(String values) {
+        for (Branch item:branchList) {
+            if(item.getAdress().equals(values) )
                 return item;
         }
         return null;
@@ -151,21 +168,28 @@ public class MySQL_DBManager implements DB_manager {
 
 
     @Override
-    public boolean updateCarKM(Order order)
+    public void updateCarKM(Order order)
     {
-        // TODO: 16/05/2018  
-        return false;
+        ReturnCarById(order.getNumOfCars()).setKilometers(order.getKilometerFinish());
     }
 
     @Override
     public List<Car> getAvailableCar() {
-       //// TODO: 16/05/2018  
-        return null;
+        List<Car> temp = carList;
+        for(Order item :getAllOpenOrders()) {
+            temp.remove(ReturnCarById(item.getNumOfCars()));
+        }
+        return temp;
     }
 
     @Override
-    public List<Car> getAvailableCarOfBranch() {
-      //// TODO: 16/05/2018  
+    public List<Car> getAvailableCarOfBranch(String name) {
+        Branch branch =ReturnBranchByName(name);
+        List<Car> temp = carList;
+        for(Car item : getAvailableCar()){
+            if(branch.getBranchNumber()==item.getBranchNumber())
+                temp.remove(item);
+        }
         return null;
     }
 
