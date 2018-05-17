@@ -46,20 +46,6 @@ public class MySQL_DBManager implements DB_manager {
     }
 
 
-
-    @Override
-    public boolean carExists(Long values) {
-
-        for (Car item:carList) {
-            if(item.getCarNumber()==values )
-                return true;
-        }
-        return false;
-
-    }
-
-
-
     @Override
     public boolean custumerExsits(Customer values) {
 
@@ -73,89 +59,9 @@ public class MySQL_DBManager implements DB_manager {
     }
 
     @Override
-    public boolean branchExists(int values) {
-        for (Branch item:branchList) {
-            if(item.getBranchNumber()==values )
-                return true;
-        }
+    public boolean addCustomer(Customer values) {
         return false;
     }
-
-    @Override
-    public Boolean addCustomer(Customer values) {
-
-        try {
-
-            if(custumerExsits(values)==true)
-                return false;
-            String url = WEB_URL + "addCustomer.php" ;
-
-            final ContentValues v = new ContentValues();
-            v.put( "_id", values.getId() );
-            v.put( "first_name", values.getFirstName() );
-            v.put( "last_name", values.getLastName() );
-            v.put( "phoneNumber", values.getPhoneNumber() );
-            v.put( "email", values.getEmail() );
-            v.put( "creditCard", values.getCreditCard() );
-
-            PHPtools.POST( url, v );
-
-        } catch (Exception e) {
-            //Log.w( Constants.Log.APP_LOG, e.getMessage() );
-        }
-        customerList.add(values);
-        return true;
-    }
-
-    @Override
-    public long addBranch(Branch values) {
-        try {
-
-            if(branchExists(values.getBranchNumber())==true)
-                return -1;
-            String url = WEB_URL + "addBranch.php" ;
-
-            final ContentValues v = new ContentValues();
-            v.put( "_id", values.getBranchNumber() );
-            v.put( "address", values.getAdress() );
-            v.put( "space", values.getNumberOfParkingSpaces() );
-            PHPtools.POST( url, v );
-
-        } catch (Exception e) {
-            //Log.w( Constants.Log.APP_LOG, e.getMessage() );
-        }
-        branchList.add(values);
-        return values.getBranchNumber();
-
-    }
-
-
-
-    @Override
-    public long addCar(Car values) {
-
-        try {
-
-            if(carExists(values.getCarNumber())==true)
-                return -1;
-            String url = WEB_URL + "addCar.php" ;
-
-            final ContentValues v = new ContentValues();
-            v.put( "_id", values.getCarNumber() );
-            v.put( "branch", values.getBranchNumber() );
-            v.put( "model", values.getModel() );
-            v.put( "km", values.getKilometers() );
-            PHPtools.POST( url, v );
-
-        } catch (Exception e) {
-            //Log.w( Constants.Log.APP_LOG, e.getMessage() );
-        }
-        carList.add(values);
-        return values.getCarNumber();
-
-    }
-
-
 
     @Override
     public List<Customer> getAllCustomers() {
@@ -243,8 +149,9 @@ public class MySQL_DBManager implements DB_manager {
         return null;
     }
 
+
     @Override
-    public boolean updateCarKl(Order order)
+    public boolean updateCarKM(Order order)
     {
         // TODO: 16/05/2018  
         return false;
@@ -263,10 +170,23 @@ public class MySQL_DBManager implements DB_manager {
     }
 
     @Override
-    public List<String> getModels() {
-        // TODO: 16/05/2018  
+    public List<Car> getAvailableCarOnKm() {
+        // TODO: 16/05/2018
         return null;
     }
+
+    @Override
+    public List<String> getAllModel() {
+        // TODO: 16/05/2018
+        return null;
+    }
+
+    @Override
+    public List<Branch> getBranchforModel() {
+        // TODO: 16/05/2018
+        return null;
+    }
+
 
     @Override
     public List<Order> getAllOpenOrders() {
@@ -287,8 +207,9 @@ public class MySQL_DBManager implements DB_manager {
         return null;
     }
 
+
     @Override
-    public Boolean closedAtLastSeconds() {
+    public Boolean closedAtLastTenSeconds() {
         // TODO: 16/05/2018  
 
         return null;
