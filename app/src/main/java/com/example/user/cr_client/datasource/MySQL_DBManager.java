@@ -298,11 +298,8 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public Boolean closeOrder(Order order) {
-        List<Order> orders = getAllOpenOrders();
-        for(Order item:orders)
-            if(order.getOrderNum()==item.getOrderNum())
 
-        return null;
+        return false;
     }
 
 
