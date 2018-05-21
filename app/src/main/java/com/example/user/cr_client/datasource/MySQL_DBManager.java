@@ -33,6 +33,7 @@ public class MySQL_DBManager implements DB_manager {
     private List<Customer> customerList;
     private List<Branch> branchList;
     private List<Order> orderList;
+    private List<Order> closeList = new ArrayList<Order>();;
 
     private List<Car> carList;
 
@@ -41,6 +42,7 @@ public class MySQL_DBManager implements DB_manager {
         branchList = getAllBrunches();
         carList = getAllCars();
         orderList = getAllOpenOrders();
+
     }
 
 
@@ -197,26 +199,16 @@ public class MySQL_DBManager implements DB_manager {
     @Override
     public void updateCarKM(Order order)
     {
-        ReturnCarById(order.getNumOfCars()).setKilometers(order.getKilometerFinish());
+
     }
 
     @Override
     public List<Car> getAvailableCar() {
-        List<Car> temp = carList;
-        for(Order item :getAllOpenOrders()) {
-            temp.remove(ReturnCarById(item.getNumOfCars()));
-        }
-        return temp;
+        return null;
     }
 
     @Override
     public List<Car> getAvailableCarOfBranch(String name) {
-        Branch branch =ReturnBranchByName(name);
-        List<Car> temp = carList;
-        for(Car item : getAvailableCar()){
-            if(branch.getBranchNumber()==item.getBranchNumber())
-                temp.remove(item);
-        }
         return null;
     }
 
@@ -227,10 +219,7 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public List<String> getAllModel() {
-        List<String> models = new ArrayList<>();
-        for(Car item:carList){
-           // models.add(item.getModel());
-        }
+
         return null;
     }
 
@@ -248,12 +237,11 @@ public class MySQL_DBManager implements DB_manager {
         List<Order> result = new ArrayList<Order>();
         try
         {
-            String str = PHPtools.GET(WEB_URL + "/getOrder.php");
+            String str = PHPtools.GET(WEB_URL + "getOpenOrder.php");
             JSONArray array = new JSONObject(str).getJSONArray("orders");
             for (int i = 0; i < array.length(); i++)
             {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-
                 JSONObject jsonObject = array.getJSONObject(i);
                 Order order = new Order();
                 order.setOrderNum(jsonObject.getInt("_id"));
@@ -274,20 +262,14 @@ public class MySQL_DBManager implements DB_manager {
     @Override
     public Boolean openOrder(Order values) {
         try {
-
-
-            String url = WEB_URL + "addCOrders.php" ;
-
+            String url = WEB_URL + "openOrders.php" ;
             final ContentValues v = new ContentValues();
             v.put( "_id", values.getOrderNum() );
             v.put( "id_customer", values.getCustomerNum() );
-            v.put( "status", values.getStatus().toString());
             v.put( "numCar", values.getNumOfCars() );
             v.put( "km_start", values.getKilometerStart() );
             v.put( "date_start", values.getRentalStart().toString());
-
             PHPtools.POST( url, v );
-
         } catch (Exception e) {
             //Log.w( Constants.Log.APP_LOG, e.getMessage() );
         }
@@ -297,15 +279,29 @@ public class MySQL_DBManager implements DB_manager {
     }
 
     @Override
-    public Boolean closeOrder(Order order) {
+    public Boolean closeOrder(Order values) {
 
-        return false;
+        try {
+            String url = WEB_URL + "closeOrders.php" ;
+            final ContentValues v = new ContentValues();
+            v.put( "_id", values.getOrderNum() );
+            v.put( "km_finish", values.getKilometerStart() );
+            v.put( "date_finish", values.getRentalStart().toString());
+            PHPtools.POST( url, v );
+        } catch (Exception e) {
+            //Log.w( Constants.Log.APP_LOG, e.getMessage() );
+        }
+        orderList.add(values);
+        closeList.add(values);
+        return true;
     }
 
 
     @Override
     public Boolean closedAtLastTenSeconds() {
-        // TODO: 16/05/2018
-        return null;
+        if(closeList.isEmpty())
+            return false;
+        closeList.clear();
+        return true;
     }
 }

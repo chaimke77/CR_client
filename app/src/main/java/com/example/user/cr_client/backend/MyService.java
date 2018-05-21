@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.user.cr_client.controller.MainActivity;
+import com.example.user.cr_client.entities.Order;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,13 +34,16 @@ public class MyService extends Service {
             public void run() {
                 Log.d("MyService", "Start Sending message...");
                 Intent broadcastIntent = new Intent();
-                broadcastIntent.setAction(MainActivity.mBroadcastStringAction);
+                broadcastIntent.setAction(MainActivity.mBroadcastAction);
                 broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm:ss");
                 String currentDateandTime = sdf.format(new Date());
-                broadcastIntent.putExtra(PARAM_OUT_MSG, "Service Timer: " + currentDateandTime);
-                sendBroadcast(broadcastIntent);
-                Log.d("MyService", "End Sending message...");
+                if(DBManagerFactory.getManager().closedAtLastTenSeconds()) {
+                    broadcastIntent.putExtra(PARAM_OUT_MSG, "Service Timer: " + currentDateandTime);
+                    sendBroadcast(broadcastIntent);
+                    Log.d("MyService", "End Sending message...");
+                }
             }
         }, 1, 1000*10);
 
