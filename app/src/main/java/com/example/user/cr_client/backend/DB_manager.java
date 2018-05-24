@@ -24,15 +24,16 @@ public interface DB_manager {
     List<Customer> getAllCustomers();
     List<Branch> getAllBrunches();
     List<Car> getAllCars();
-    void updateCarKM(Order order);
+
     List<Car> getAvailableCar();
     List<Car> getAvailableCarOfBranch(String branch);
     List<Car> getAvailableCarOnKm();
-    List<String> getAllModel();
+   // List<String> getAllModel();
     List<Branch> getBranchforModel();
     List<CarModel> getAllModels();
     List<Order> getAllOpenOrders();
     Boolean openOrder(Order order);
     Boolean closeOrder(Order order);
     Boolean closedAtLastTenSeconds();
+    void updateCarKM(int newKM, int carNum);
 }

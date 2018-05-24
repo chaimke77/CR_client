@@ -48,33 +48,6 @@ public class MySQL_DBManager implements DB_manager {
 
     }
 
-
-   /* @Override
-    public Customer ReturnCustumerById(String values) {
-        for (Customer item:customerList) {
-            if(item.getId().equals(values) )
-                return item;
-        }
-        return null;
-    }
-    @Override
-    public Car ReturnCarById(Long values) {
-        for (Car item:carList) {
-            if(item.getCarNumber()==values )
-                return item;
-        }
-        return null;
-    }
-    @Override
-    public Branch ReturnBranchByName(String values) {
-        for (Branch item:branchList) {
-            if(item.getAdress().equals(values) )
-                return item;
-        }
-        return null;
-    }*/
-
-
     @Override
     public boolean custumerExsits(Customer values) {
 
@@ -231,18 +204,68 @@ public class MySQL_DBManager implements DB_manager {
 
 
     @Override
-    public void updateCarKM(Order order)
+    public void updateCarKM(int newKM, int carNum)
     {
-
+        try {
+            String url = WEB_URL + "updateCarKM.php" ;
+            final ContentValues v = new ContentValues();
+            v.put( "km", newKM);
+            v.put( "_id", carNum);
+            PHPtools.POST( url, v );
+        } catch (Exception e) {
+            //Log.w( Constants.Log.APP_LOG, e.getMessage() );
+        }
     }
 
     @Override
     public List<Car> getAvailableCar() {
+        List<Car> result = new ArrayList<Car>();
+        try
+        {
+            String str = PHPtools.GET(WEB_URL + "getAvailableCar.php");
+            JSONArray array = new JSONObject(str).getJSONArray("car");
+            for (int i = 0; i < array.length(); i++)
+            {
+                JSONObject jsonObject = array.getJSONObject(i);
+                Car car = new Car();
+                car.setCarNumber(jsonObject.getInt("_id"));
+                car.setBranchNumber(jsonObject.getInt("branch"));
+                car.setModel(jsonObject.getInt("model"));
+                car.setKilometers(jsonObject.getInt("km"));
+                result.add(car);
+            }
+            return result;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public List<Car> getAvailableCarOfBranch(String name) {
+        List<Car> result = new ArrayList<Car>();
+        try
+        {
+            String str = PHPtools.GET(WEB_URL + "getAvailableCarOfBranch.php");
+            final ContentValues v = new ContentValues();
+            v.put( "branch", name );
+            JSONArray array = new JSONObject(str).getJSONArray("car");
+            for (int i = 0; i < array.length(); i++)
+            {
+                JSONObject jsonObject = array.getJSONObject(i);
+                Car car = new Car();
+                car.setCarNumber(jsonObject.getInt("_id"));
+                car.setBranchNumber(jsonObject.getInt("branch"));
+                car.setModel(jsonObject.getInt("model"));
+                car.setKilometers(jsonObject.getInt("km"));
+                result.add(car);
+            }
+            return result;
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -251,11 +274,6 @@ public class MySQL_DBManager implements DB_manager {
         return null;
     }
 
-    @Override
-    public List<String> getAllModel() {
-
-        return null;
-    }
 
     @Override
     public List<Branch> getBranchforModel() {
@@ -342,3 +360,30 @@ public class MySQL_DBManager implements DB_manager {
         return true;
     }
 }
+
+
+
+  /* @Override
+    public Customer ReturnCustumerById(String values) {
+        for (Customer item:customerList) {
+            if(item.getId().equals(values) )
+                return item;
+        }
+        return null;
+    }
+    @Override
+    public Car ReturnCarById(Long values) {
+        for (Car item:carList) {
+            if(item.getCarNumber()==values )
+                return item;
+        }
+        return null;
+    }
+    @Override
+    public Branch ReturnBranchByName(String values) {
+        for (Branch item:branchList) {
+            if(item.getAdress().equals(values) )
+                return item;
+        }
+        return null;
+    }*/
