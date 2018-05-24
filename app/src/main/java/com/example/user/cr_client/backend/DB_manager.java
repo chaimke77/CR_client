@@ -16,9 +16,9 @@ import java.util.List;
 
 public interface DB_manager {
 
-    Customer ReturnCustumerById(String values);
-    Car ReturnCarById(Long values);
-    Branch ReturnBranchByName(String values);
+    // Customer ReturnCustumerById(String values);
+    // Car ReturnCarById(Long values);
+    // Branch ReturnBranchByName(String values);
     boolean custumerExsits(Customer values);
     boolean addCustomer(Customer values);
     List<Customer> getAllCustomers();
