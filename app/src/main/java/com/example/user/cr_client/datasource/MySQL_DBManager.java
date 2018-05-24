@@ -51,14 +51,20 @@ public class MySQL_DBManager implements DB_manager {
     @Override
     public boolean custumerExsits(Customer values) {
 
-        for (Customer item:customerList) {
-            if(item.getId().equals(values.getId()) )
-            {
-                return true;
-            }
+        try
+        {
+            String str = PHPtools.GET(WEB_URL + "/custumerExsits?"+values.getId() +".php");
+            JSONArray array = new JSONObject(str).getJSONArray("customer");
+            if ( array.length()==0)
+                return false;
+            return true;
+
+        }catch (Exception e) {
+            //Log.w( Constants.Log.APP_LOG, e.getMessage() );
         }
-        return false;
+        return true;
     }
+
 
     @Override
     public boolean addCustomer(Customer values) {
@@ -247,9 +253,7 @@ public class MySQL_DBManager implements DB_manager {
         List<Car> result = new ArrayList<Car>();
         try
         {
-            String str = PHPtools.GET(WEB_URL + "getAvailableCarOfBranch.php");
-            final ContentValues v = new ContentValues();
-            v.put( "branch", name );
+            String str = PHPtools.GET(WEB_URL + "getAvailableCarOfBranch?branch="+name+".php");
             JSONArray array = new JSONObject(str).getJSONArray("car");
             for (int i = 0; i < array.length(); i++)
             {
