@@ -1,10 +1,12 @@
 package com.example.user.cr_client.datasource;
 
 import android.content.ContentValues;
+import android.content.Intent;
 
 
 import com.example.user.cr_client.backend.DBManagerFactory;
 import com.example.user.cr_client.backend.DB_manager;
+import com.example.user.cr_client.controller.AddCustomerActivity;
 import com.example.user.cr_client.entities.Branch;
 import com.example.user.cr_client.entities.Car;
 import com.example.user.cr_client.entities.CarModel;
@@ -50,27 +52,31 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public boolean custumerExsits(String id, String name) {
-
+        boolean retval = true;
         try
         {
             String str = PHPtools.GET(WEB_URL + "/custumerExsits.php?_id="+id+"&first_name='"+name+"'");
             JSONArray array = new JSONObject(str).getJSONArray("customer");
             if ( array.length()==0)
-                return false;
-            return true;
+                retval = false;
+
 
         }catch (Exception e) {
             //Log.w( Constants.Log.APP_LOG, e.getMessage() );
         }
-        return true;
+        return retval;
     }
 
 
     @Override
     public boolean addCustomer(Customer values) {
+        for(Customer item :getAllCustomers())
+        {
+            if(item.getId()==values.getId())
+                return false;
+        }
         try {
             String url = WEB_URL + "addCustomer.php" ;
-
             final ContentValues v = new ContentValues();
             v.put( "_id", values.getId() );
             v.put( "first_name", values.getFirstName() );

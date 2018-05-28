@@ -24,6 +24,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
     Button login;
     TextView reg;
     CheckBox check;
+    //boolean remember = false;
 
     public static final String PREF = "login.data";
     public static final String USER = "user";
@@ -35,6 +36,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
         check = (CheckBox) findViewById(R.id.checkBox);
         login = (Button) findViewById(R.id.btn_login);
         reg = (TextView) findViewById(R.id.link_signup);
+        check.setOnClickListener(this);
         login.setOnClickListener(this);
         reg.setOnClickListener(this);
 
@@ -52,10 +54,11 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
         }
         if (sharedpreferences.contains(PASSWORD)) {
             password.setText(sharedpreferences.getString(PASSWORD, ""));
+            check.setChecked(true);
         }
     }
 
-    public void Save(View view) {
+    public void Save() {
         String n = user.getText().toString();
         String e = password.getText().toString();
         SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -64,43 +67,58 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
         editor.commit();
     }
 
-    public void clear(View view) {
-        user.setText("");
-        password.setText("");
+    public void clear() {
+        sharedpreferences .edit().clear().commit();
     }
 
     @Override
     public void onClick(View v) {
         String name = (user.getText().toString());
         String pass = (password.getText().toString());
-        sharedpreferences = getSharedPreferences(PREF,Context.MODE_PRIVATE);
-        if (v == login){
-        if (sharedpreferences.contains(USER)) {
-            if (sharedpreferences.getString(USER, "").equals(name) && sharedpreferences.getString(PASSWORD, "").equals(pass)) {
-                goMain();
+        sharedpreferences = getSharedPreferences(PREF, Context.MODE_PRIVATE);
+        if (v == login) {
+            if (!check.isChecked())
+                clear();
+            if (sharedpreferences.contains(USER)) {
+                if (sharedpreferences.getString(USER, "").equals(name) && sharedpreferences.getString(PASSWORD, "").equals(pass)) {
+                    goMain();
+                }
+            } else {
+                if (check.isChecked())
+                    Save();
+                try {
+                    new AsyncTask<Void, Void, Boolean>() {
+                        @Override
+                        protected void onPostExecute(Boolean flag) {
+                            super.onPostExecute(flag);
+                            if (flag) {
+                                goMain();
+                            }
+                            else
+                                {
+                                Toast.makeText(getBaseContext(), "User is not exsist", Toast.LENGTH_SHORT).show();
+                                }
+                        }
+                        @Override
+                        protected Boolean doInBackground(Void... params) {
+                            return DBManagerFactory.getManager().custumerExsits(getPass(), getName());
+                        }
+                    }.execute();
+                } catch (Exception e) {
+
+                }
             }
         }
-            try {
-                new AsyncTask<Void, Void, Boolean>() {
-                    @Override
-                    protected void onPostExecute(Boolean flag) {
-                        super.onPostExecute(flag);
-                        if(flag) {
-                            goMain();
-                        }
-                    }
-
-                    @Override
-                    protected Boolean doInBackground(Void... params) {
-                        return DBManagerFactory.getManager().custumerExsits(getPass(), getName());
-                    }
-                }.execute();
-            } catch (Exception e) {
-
-            }
-            Toast.makeText(getBaseContext(), "User is not exsist", Toast.LENGTH_SHORT).show();
+        if (v == reg)
+        {
+            Intent intent = new Intent(this, AddCustomerActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
+
+
+
 
 
     String getName()
@@ -119,6 +137,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
         startActivity(intent);
         finish();
     }
+
 
 }
 
