@@ -49,11 +49,11 @@ public class MySQL_DBManager implements DB_manager {
     }
 
     @Override
-    public boolean custumerExsits(Customer values) {
+    public boolean custumerExsits(String id, String name) {
 
         try
         {
-            String str = PHPtools.GET(WEB_URL + "/custumerExsits?"+values.getId() +".php");
+            String str = PHPtools.GET(WEB_URL + "/custumerExsits.php?_id="+id+"&first_name='"+name+"'");
             JSONArray array = new JSONObject(str).getJSONArray("customer");
             if ( array.length()==0)
                 return false;
@@ -69,9 +69,6 @@ public class MySQL_DBManager implements DB_manager {
     @Override
     public boolean addCustomer(Customer values) {
         try {
-
-            if(custumerExsits(values)==true)
-                return false;
             String url = WEB_URL + "addCustomer.php" ;
 
             final ContentValues v = new ContentValues();
@@ -147,8 +144,6 @@ public class MySQL_DBManager implements DB_manager {
         return null;
     }
 
-
-
     @Override
     public List<Car> getAllCars() {
 
@@ -208,7 +203,6 @@ public class MySQL_DBManager implements DB_manager {
         return null;
     }
 
-
     @Override
     public void updateCarKM(int newKM, int carNum)
     {
@@ -253,7 +247,7 @@ public class MySQL_DBManager implements DB_manager {
         List<Car> result = new ArrayList<Car>();
         try
         {
-            String str = PHPtools.GET(WEB_URL + "getAvailableCarOfBranch?branch="+name+".php");
+            String str = PHPtools.GET(WEB_URL + "getAvailableCarOfBranch.php?branch="+name);
             JSONArray array = new JSONObject(str).getJSONArray("car");
             for (int i = 0; i < array.length(); i++)
             {
@@ -390,4 +384,4 @@ public class MySQL_DBManager implements DB_manager {
                 return item;
         }
         return null;
-    }*/
+   }*/

@@ -19,7 +19,7 @@ public interface DB_manager {
     // Customer ReturnCustumerById(String values);
     // Car ReturnCarById(Long values);
     // Branch ReturnBranchByName(String values);
-    boolean custumerExsits(Customer values);
+    boolean custumerExsits(String id, String name);
     boolean addCustomer(Customer values);
     List<Customer> getAllCustomers();
     List<Branch> getAllBrunches();
