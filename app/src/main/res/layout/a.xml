@@ -6,15 +6,5 @@
     android:layout_height="match_parent"
     >
 
-    <Button
-        android:id="@+id/btnFragmentA"
-        android:layout_width="143dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginLeft="128dp"
-        android:layout_marginTop="16dp"
-        android:background="@android:color/white"
-        android:text="A: Get TOAST MESSAGE"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

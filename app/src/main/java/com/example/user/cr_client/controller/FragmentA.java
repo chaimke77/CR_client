@@ -26,12 +26,7 @@ public class FragmentA extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate( R.layout.a, container, false);
-        final Button button = (Button) view.findViewById(R.id.btnFragmentA);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Click from fragment A", Toast.LENGTH_SHORT).show();
-            }
-        });
+
         return view;
     }
 }
