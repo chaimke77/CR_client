@@ -1,43 +1,31 @@
 package com.example.user.cr_client.controller;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.view.MenuItem;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 
 
-import android.view.Menu;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
 
 
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.MyService;
-import com.example.user.cr_client.entities.Order;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String mBroadcastAction = "com.example.user.carrentalapplication.A_CUSTOM_INTENT";
 
-    Fragment a, b, c, d;
+    Fragment about, b, c, d;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });*/
 
 
-        a = new FragmentA();
+        about = new FragmentA();
        /* b = new FragmentB();
         c = new FragmentC();
         d = new FragmentD();*/
@@ -70,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        changeFragement(a);
+        changeFragement(about);
 
     }
 
@@ -112,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_about:
                 onBackPressed();
-                changeFragement(a);
+                changeFragement(about);
                 return true;
             case R.id.nav_send:
                 onBackPressed();
