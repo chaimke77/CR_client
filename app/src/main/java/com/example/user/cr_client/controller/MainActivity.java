@@ -163,14 +163,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     protected void phone() {
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:0552230150"));
-
-       if (ActivityCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        startActivity(callIntent);
+        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "0552230150", null)));
     }
 
 
