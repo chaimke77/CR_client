@@ -1,6 +1,7 @@
 package com.example.user.cr_client.controller;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 
 import android.view.Menu;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 
 import com.example.user.cr_client.R;
@@ -104,17 +106,17 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_about:
+                onBackPressed();
                 changeFragement(a);
                 return true;
-           /* case R.id.nav_gallery:
-                changeFragement(b);
+            case R.id.nav_send:
+                onBackPressed();
+                sendEmail();
                 return true;
-            case R.id.nav_slideshow:
-                changeFragement(c);
+            case R.id.nav_exit:
+                finish();
+                System.exit(0);
                 return true;
-            case R.id.nav_manage:
-                changeFragement(d);
-                return true;*/
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -127,6 +129,28 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         transaction.replace(R.id.frgamentContainer, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
+
+    protected void sendEmail() {
+
+
+        String[] TO = { "chaimke77@gmail.com"};
+
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+
+
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.setType("message/rfc822");
+        try {
+
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+
+        } catch (android.content.ActivityNotFoundException ex) {
+
+        }
     }
 }
 
