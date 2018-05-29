@@ -141,9 +141,6 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
 
 
         emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
         emailIntent.setType("message/rfc822");
         try {
 
