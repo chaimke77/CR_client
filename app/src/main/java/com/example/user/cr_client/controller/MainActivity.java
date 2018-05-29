@@ -1,9 +1,12 @@
 package com.example.user.cr_client.controller;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,11 +33,12 @@ import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.MyService;
 import com.example.user.cr_client.entities.Order;
 
-public class MainActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String mBroadcastAction = "com.example.user.carrentalapplication.A_CUSTOM_INTENT";
 
-    Fragment a,b,c,d;
+    Fragment a, b, c, d;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
         changeFragement(a);
 
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -113,6 +118,10 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
                 onBackPressed();
                 sendEmail();
                 return true;
+            case R.id.nav_phone:
+                onBackPressed();
+                phone();
+                return true;
             case R.id.nav_exit:
                 finish();
                 System.exit(0);
@@ -134,7 +143,7 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
     protected void sendEmail() {
 
 
-        String[] TO = { "chaimke77@gmail.com"};
+        String[] TO = {"chaimke77@gmail.com"};
 
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
 
@@ -152,5 +161,18 @@ public class MainActivity extends AppCompatActivity  implements NavigationView.O
 
         }
     }
+
+    protected void phone() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:0552230150"));
+
+       if (ActivityCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        startActivity(callIntent);
+    }
+
+
 }
 
