@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.DBManagerFactory;
 import com.example.user.cr_client.entities.Customer;
@@ -41,6 +42,7 @@ public class AddCustomerActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_customer);
         findViews();
+
     }
 
     @Override
