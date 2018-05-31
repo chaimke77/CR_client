@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         about = new homeFragment();
-       b = new FragmentB();
-         c = new FragmentC();
+        b = new FragmentB();
+        c = new FragmentC();
         d = new FragmentD();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

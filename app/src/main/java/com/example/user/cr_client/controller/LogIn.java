@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.DBManagerFactory;
-import com.example.user.cr_client.backend.DB_manager;
 
 public class LogIn extends AppCompatActivity implements View.OnClickListener  {
 
@@ -79,10 +78,12 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
         if (v == login) {
             if (!check.isChecked())
                 clear();
-            if (sharedpreferences.contains(USER)) {
-                if (sharedpreferences.getString(USER, "").equals(name) && sharedpreferences.getString(PASSWORD, "").equals(pass)) {
-                    goMain();
-                }
+
+            if (sharedpreferences.contains(USER) &&
+                    ((!(sharedpreferences.getString(USER, "").equals("")))||(!(sharedpreferences.getString(PASSWORD, "").equals(""))))
+                            && sharedpreferences.getString(USER, "").equals(name)
+                    && sharedpreferences.getString(PASSWORD, "").equals(pass)) {
+                goMain();
             } else {
                 if (check.isChecked())
                     Save();
@@ -93,12 +94,11 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
                             super.onPostExecute(flag);
                             if (flag) {
                                 goMain();
-                            }
-                            else
-                                {
+                            } else {
                                 Toast.makeText(getBaseContext(), "User is not exsist", Toast.LENGTH_SHORT).show();
-                                }
+                            }
                         }
+
                         @Override
                         protected Boolean doInBackground(Void... params) {
                             return DBManagerFactory.getManager().custumerExsits(getPass(), getName());
@@ -109,6 +109,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
                 }
             }
         }
+
         if (v == reg)
         {
             Intent intent = new Intent(this, AddCustomerActivity.class);

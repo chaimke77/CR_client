@@ -1,28 +1,21 @@
 package com.example.user.cr_client.datasource;
 
 import android.content.ContentValues;
-import android.content.Intent;
 
-
-import com.example.user.cr_client.backend.DBManagerFactory;
 import com.example.user.cr_client.backend.DB_manager;
-import com.example.user.cr_client.controller.AddCustomerActivity;
 import com.example.user.cr_client.entities.Branch;
 import com.example.user.cr_client.entities.Car;
 import com.example.user.cr_client.entities.CarModel;
 import com.example.user.cr_client.entities.Customer;
 import com.example.user.cr_client.entities.Gearbox;
 import com.example.user.cr_client.entities.Order;
-import com.example.user.cr_client.entities.StatusOrder;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,7 +48,7 @@ public class MySQL_DBManager implements DB_manager {
         boolean retval = true;
         try
         {
-            String str = PHPtools.GET(WEB_URL + "/custumerExsits.php?_id="+id+"&first_name='"+name+"'");
+            String str = PHPtools.GET(WEB_URL + "/custumerExsits.php?_id='"+id+"'&first_name='"+name+"'");
             JSONArray array = new JSONObject(str).getJSONArray("customer");
             if ( array.length()==0)
                 retval = false;
