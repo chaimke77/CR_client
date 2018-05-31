@@ -1,4 +1,4 @@
-package com.example.user.cr_client.controller;
+package com.example.user.cr_client.Fragments;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -19,10 +19,10 @@ import com.example.user.cr_client.R;
 
 
 
-public class FragmentA extends Fragment  implements View.OnClickListener  {
+public class homeFragment extends Fragment  implements View.OnClickListener  {
     private TextView tel;
     private TextView mail;
-    public FragmentA() {
+    public homeFragment() {
 
     }
 

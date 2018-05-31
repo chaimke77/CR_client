@@ -18,6 +18,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 
 
+import com.example.user.cr_client.Fragments.FragmentB;
+import com.example.user.cr_client.Fragments.FragmentC;
+import com.example.user.cr_client.Fragments.FragmentD;
+import com.example.user.cr_client.Fragments.homeFragment;
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.MyService;
 
@@ -45,10 +49,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });*/
 
 
-        about = new FragmentA();
-       /* b = new FragmentB();
-        c = new FragmentC();
-        d = new FragmentD();*/
+        about = new homeFragment();
+       b = new FragmentB();
+         c = new FragmentC();
+        d = new FragmentD();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -101,6 +105,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_about:
                 onBackPressed();
                 changeFragement(about);
+                return true;
+            case R.id.nav_branch:
+                onBackPressed();
+                changeFragement(b);
+                return true;
+            case R.id.nav_available_car:
+                onBackPressed();
+                changeFragement(c);
+                return true;
+            case R.id.nav_my_car:
+                onBackPressed();
+                changeFragement(d);
                 return true;
             case R.id.nav_send:
                 onBackPressed();
