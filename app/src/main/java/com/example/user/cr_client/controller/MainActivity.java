@@ -18,9 +18,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 
 
-import com.example.user.cr_client.Fragments.FragmentB;
-import com.example.user.cr_client.Fragments.FragmentC;
-import com.example.user.cr_client.Fragments.FragmentD;
+import com.example.user.cr_client.Fragments.branchFragment;
+import com.example.user.cr_client.Fragments.openCarsFragment;
 import com.example.user.cr_client.Fragments.homeFragment;
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.MyService;
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public static final String mBroadcastAction = "com.example.user.carrentalapplication.A_CUSTOM_INTENT";
 
-    Fragment about, b, c, d;
+    Fragment about, branch, car, my;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +49,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         about = new homeFragment();
-        b = new FragmentB();
-        c = new FragmentC();
-        d = new FragmentD();
+        branch = new branchFragment();
+        car = new branchFragment();
+        my = new openCarsFragment();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -108,15 +107,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             case R.id.nav_branch:
                 onBackPressed();
-                changeFragement(b);
+                changeFragement(branch);
                 return true;
             case R.id.nav_available_car:
                 onBackPressed();
-                changeFragement(c);
+                changeFragement(car);
                 return true;
             case R.id.nav_my_car:
                 onBackPressed();
-                changeFragement(d);
+                changeFragement(my);
                 return true;
             case R.id.nav_send:
                 onBackPressed();

@@ -23,7 +23,7 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
     Button login;
     TextView reg;
     CheckBox check;
-    //boolean remember = false;
+    static String idCustomer="";
 
     public static final String PREF = "login.data";
     public static final String USER = "user";
@@ -136,7 +136,13 @@ public class LogIn extends AppCompatActivity implements View.OnClickListener  {
     {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        idCustomer=password.getText().toString();
         finish();
+    }
+
+    static public String getIdCustomer()
+    {
+        return idCustomer;
     }
 
 

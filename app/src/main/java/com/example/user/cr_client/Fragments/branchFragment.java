@@ -18,10 +18,12 @@ import com.example.user.cr_client.entities.Branch;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentC extends Fragment {
 
 
-    public FragmentC() {
+public class branchFragment extends Fragment {
+
+
+    public branchFragment() {
 
     }
 
@@ -33,7 +35,7 @@ public class FragmentC extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        final View view = inflater.inflate(R.layout.c, container, false);
+        final View view = inflater.inflate(R.layout.list_branch, container, false);
 
         try {
             new AsyncTask<Void, Void,List<Branch>>() {
@@ -45,25 +47,35 @@ public class FragmentC extends Fragment {
                         address.add(item.getAdress());
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                             android.R.layout.simple_list_item_1, android.R.id.text1, address );
-                    ListView listCars = (ListView) view.findViewById(R.id.list_item);
-                    listCars.setAdapter(adapter);
-                    listCars.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                       /* @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            if(position % 2==1)
+                            {
+                                convertView.setBackgroundResource(Color.alpha(1));
+                            }
+                            else
+                                {
+                            convertView.setBackgroundResource(Color.alpha(2));
+                            }
+                            return view;}
+                    };*/
+
+
+                    ListView listBranch = (ListView) view.findViewById(R.id.list_item);
+                    listBranch.setAdapter(adapter);
+                    listBranch.setOnItemClickListener(new AdapterView.OnItemClickListener()
                     {
                         @Override
                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                             String branch = (String) adapterView.getAdapter().getItem(i);
-                            FragmentD fragmentD = new FragmentD();
+                            openCarsFragment fragment = new openCarsFragment();
                             Bundle args = new Bundle();
                             args.putString("branch", branch);
-                            fragmentD.setArguments(args);
-                            ((MainActivity) getActivity()).changeFragement(fragmentD);
-
-
+                            fragment.setArguments(args);
+                            ((MainActivity) getActivity()).changeFragement(fragment);
                         }
                     });
-
                 }
-
                 @Override
                 protected List<Branch> doInBackground(Void... params) {
                     return DBManagerFactory.getManager().getAllBrunches();

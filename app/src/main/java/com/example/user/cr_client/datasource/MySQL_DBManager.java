@@ -33,6 +33,7 @@ public class MySQL_DBManager implements DB_manager {
     private List<Order> closeList = new ArrayList<Order>();;
     private List<CarModel> modelList;
     private List<Car> carList;
+    private List<Order> openOrderList;
 
     public MySQL_DBManager(){
         customerList = getAllCustomers();
@@ -40,6 +41,7 @@ public class MySQL_DBManager implements DB_manager {
         carList = getAllCars();
         orderList = getAllOpenOrders();
         modelList = getAllModels();
+        openOrderList = getAllOpenOrders();
 
     }
 
@@ -246,7 +248,7 @@ public class MySQL_DBManager implements DB_manager {
         List<Car> result = new ArrayList<Car>();
         try
         {
-            String str = PHPtools.GET(WEB_URL + "getAvailableCarOfBranch.php?branch="+name);
+            String str = PHPtools.GET(WEB_URL + "getAvailableCarOfBranch.php?branch='"+name+"'");
             JSONArray array = new JSONObject(str).getJSONArray("car");
             for (int i = 0; i < array.length(); i++)
             {
@@ -310,12 +312,12 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public Boolean openOrder(Order values) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm:ss");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentDateandTime = sdf.format(new Date());
         try {
             String url = WEB_URL + "openOrders.php" ;
             final ContentValues v = new ContentValues();
-            v.put( "_id", values.getOrderNum() );
             v.put( "id_customer", values.getCustomerNum() );
             v.put( "numCar", values.getNumOfCars() );
             v.put( "km_start", values.getKilometerStart() );
@@ -325,6 +327,7 @@ public class MySQL_DBManager implements DB_manager {
             //Log.w( Constants.Log.APP_LOG, e.getMessage() );
         }
         orderList.add(values);
+        openOrderList.add(values);
         return true;
 
     }

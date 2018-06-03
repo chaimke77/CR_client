@@ -49,44 +49,7 @@ public class FragmentB extends Fragment {
             @SuppressLint("StaticFieldLeak")
             public void onClick(View v) {
 
-                new AsyncTask<Integer, Integer, String>() {
 
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-                        progressBar.setVisibility(View.VISIBLE);
-                        txtProgress.setVisibility(View.VISIBLE);
-                        txtProgress.setText("10");
-                    }
-
-                    @Override
-                    protected String doInBackground(Integer... integers) {
-                        int counter = integers[0];
-                        while (counter > 0){
-                            try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
-                            counter--;
-                            publishProgress(counter);
-                        }
-                        return "";
-                    }
-
-                    @Override
-                    protected void onProgressUpdate(Integer... progress)
-                    {
-                        progressBar.setProgress(progress[0]);
-                        txtProgress.setText(progress[0].toString());
-                    }
-
-                    @Override
-                    protected void onPostExecute(String result)
-                    {
-                        progressBar.setVisibility(View.GONE);
-                        txtProgress.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "finished progrsss", Toast.LENGTH_SHORT).show();
-                    }
-
-
-                }.execute(10);
             }
         });
         return view;
