@@ -43,6 +43,9 @@ public class openCarsByBranchFragment extends Fragment {
                 @Override
                 protected void onPostExecute(final List<Car> car) {
                     super.onPostExecute(car);
+                    if(car.isEmpty())
+                        Toast.makeText(getActivity(), "User is not exsist", Toast.LENGTH_SHORT).show();
+                    else{
 
 
                     ArrayAdapter<Car> adapter = new ArrayAdapter<Car>(getActivity(),
@@ -71,6 +74,7 @@ public class openCarsByBranchFragment extends Fragment {
                         }
 
                     });
+                }
                 }
 
                 @Override
