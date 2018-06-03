@@ -22,8 +22,8 @@ import com.example.user.cr_client.entities.Order;
 import java.util.List;
 
 
-public class openCarsFragment extends Fragment {
-    public openCarsFragment() {
+public class openCarsByBranchFragment extends Fragment {
+    public openCarsByBranchFragment() {
 
     }
 

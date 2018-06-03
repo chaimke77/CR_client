@@ -19,7 +19,7 @@ import android.support.v7.widget.Toolbar;
 
 
 import com.example.user.cr_client.Fragments.branchFragment;
-import com.example.user.cr_client.Fragments.openCarsFragment;
+import com.example.user.cr_client.Fragments.openCarsByBranchFragment;
 import com.example.user.cr_client.Fragments.homeFragment;
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.MyService;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         about = new homeFragment();
         branch = new branchFragment();
         car = new branchFragment();
-        my = new openCarsFragment();
+        my = new openCarsByBranchFragment();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

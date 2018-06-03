@@ -3,6 +3,7 @@ package com.example.user.cr_client.datasource;
 import android.content.ContentValues;
 
 import com.example.user.cr_client.backend.DB_manager;
+import com.example.user.cr_client.controller.LogIn;
 import com.example.user.cr_client.entities.Branch;
 import com.example.user.cr_client.entities.Car;
 import com.example.user.cr_client.entities.CarModel;
@@ -283,16 +284,17 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public List<Order> getAllOpenOrders() {
+
         if(orderList != null)
             return orderList;
         List<Order> result = new ArrayList<Order>();
         try
         {
-            String str = PHPtools.GET(WEB_URL + "getOpenOrder.php");
+            String str = PHPtools.GET(WEB_URL + "getOpenOrder.php?id_customer='"+ LogIn.getIdCustomer()+"'");
             JSONArray array = new JSONObject(str).getJSONArray("orders");
             for (int i = 0; i < array.length(); i++)
             {
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd hh:mm:ss");
                 JSONObject jsonObject = array.getJSONObject(i);
                 Order order = new Order();
                 order.setOrderNum(jsonObject.getInt("_id"));

@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.DBManagerFactory;
@@ -45,8 +45,10 @@ public class branchFragment extends Fragment {
                     ArrayList<String> address = new ArrayList<>();
                     for (Branch item:branch)
                         address.add(item.getAdress());
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                            android.R.layout.simple_list_item_1, android.R.id.text1, address );
+                   // ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                     //       android.R.layout.simple_list_item_1, android.R.id.text1, address );
+
+
                        /* @Override
                         public View getView(int position, View convertView, ViewGroup parent) {
                             if(position % 2==1)
@@ -60,20 +62,24 @@ public class branchFragment extends Fragment {
                             return view;}
                     };*/
 
+                    Spinner branchSpiner= (Spinner)view.findViewById(R.id.spinnerBrunch);
+                    branchSpiner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, address));
 
-                    ListView listBranch = (ListView) view.findViewById(R.id.list_item);
-                    listBranch.setAdapter(adapter);
-                    listBranch.setOnItemClickListener(new AdapterView.OnItemClickListener()
+                    //ListView listBranch = (ListView) view.findViewById(R.id.list_item);
+                    //listBranch.setAdapter(adapter);
+                    branchSpiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
                     {
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                             String branch = (String) adapterView.getAdapter().getItem(i);
-                            openCarsFragment fragment = new openCarsFragment();
+                            openCarsByBranchFragment fragment = new openCarsByBranchFragment();
                             Bundle args = new Bundle();
                             args.putString("branch", branch);
                             fragment.setArguments(args);
                             ((MainActivity) getActivity()).changeFragement(fragment);
                         }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0){}
                     });
                 }
                 @Override
