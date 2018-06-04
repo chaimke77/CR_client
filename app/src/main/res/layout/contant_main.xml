@@ -24,18 +24,18 @@
                 android:id="@+id/BranchFilter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="branch"
+                android:text="branch:"
+                android:textSize="20dp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="italic"
 
                 />
 
             <Spinner
                 android:id="@+id/spinnerBrunch"
                 android:layout_width="wrap_content"
-                android:layout_height="70dp"
-
-
-                android:background="@drawable/side_nav_bar"
-                android:popupBackground="@mipmap/ic_launcher"
+                android:layout_height="50dp"
+                android:background="@android:color/darker_gray"
                 android:spinnerMode="dialog" />
         </LinearLayout>
 
