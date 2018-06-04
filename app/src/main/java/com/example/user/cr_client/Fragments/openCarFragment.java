@@ -97,7 +97,4 @@ public class openCarFragment extends Fragment {
 
         return view;
     }
-
-
-
 }

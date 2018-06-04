@@ -116,9 +116,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         about = new homeFragment();
-        branch = new openCarFragment();
         car = new openCarFragment();
-        my = new openCarsByBranchFragment();
+        branch = new openCarsByBranchFragment();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -257,8 +256,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
 
         }
-        homeFragment home = new homeFragment();
-        changeFragement(home);
+
     }
 
 
