@@ -2,6 +2,7 @@ package com.example.user.cr_client.controller;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -16,19 +17,44 @@ import android.support.v7.app.ActionBarDrawerToggle;
 
 
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
-import com.example.user.cr_client.Fragments.branchFragment;
+import com.example.user.cr_client.Fragments.openCarFragment;
 import com.example.user.cr_client.Fragments.openCarsByBranchFragment;
 import com.example.user.cr_client.Fragments.homeFragment;
 import com.example.user.cr_client.R;
+import com.example.user.cr_client.backend.DBManagerFactory;
 import com.example.user.cr_client.backend.MyService;
+import com.example.user.cr_client.entities.Branch;
+import com.example.user.cr_client.entities.Car;
+import com.example.user.cr_client.entities.Order;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public static final String mBroadcastAction = "com.example.user.carrentalapplication.A_CUSTOM_INTENT";
 
     Fragment about, branch, car, my;
+    static Spinner branchSpiner;
+    static public Spinner getSpinner()
+    {
+        return branchSpiner;
+    }
+    static TextView branchFilter;
+    static public TextView getText()
+    {
+        return branchFilter;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+      /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,10 +73,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });*/
 
+        try {
+            new AsyncTask<Void, Void,List<Branch>>() {
+                @Override
+                protected void onPostExecute(List<Branch> branch) {
+                    super.onPostExecute(branch);
+                    ArrayList<String> address = new ArrayList<>();
+                    address.add("All");
+                    for (Branch item:branch)
+                        address.add(item.getAdress());
+
+                    branchFilter=(TextView)findViewById(R.id.BranchFilter);
+                    branchSpiner= (Spinner)findViewById(R.id.spinnerBrunch);
+                    branchSpiner.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item, address));
+                    branchSpiner.setSelection(Adapter.NO_SELECTION,false);
+                    branchSpiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+                    {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            String branch = (String) adapterView.getAdapter().getItem(i);
+                            if(branch.equals("All")){
+                                changeFragement(new openCarFragment());
+                                return;}
+                            openCarsByBranchFragment fragment = new openCarsByBranchFragment();
+                            Bundle args = new Bundle();
+                            args.putString("branch", branch);
+                            fragment.setArguments(args);
+                            changeFragement(fragment);
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0){}
+                    });
+                }
+                @Override
+                protected List<Branch> doInBackground(Void... params) {
+                    return DBManagerFactory.getManager().getAllBrunches();
+                }
+            }.execute();
+        } catch (Exception e) {
+
+        }
+
 
         about = new homeFragment();
-        branch = new branchFragment();
-        car = new branchFragment();
+        branch = new openCarFragment();
+        car = new openCarFragment();
         my = new openCarsByBranchFragment();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -167,6 +234,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     protected void phone() {
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "0552230150", null)));
+    }
+
+     public void openOrder(final Car car)
+    {
+
+        try {
+            new AsyncTask<Void, Void,Boolean>() {
+                @Override
+                protected void onPostExecute(Boolean flag) {
+                    super.onPostExecute(false);
+                    if(flag) {
+                       Toast.makeText(getBaseContext(), "Order Open", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                protected Boolean doInBackground(Void... params) {
+                    return DBManagerFactory.getManager().openOrder(new Order(LogIn.getIdCustomer(),null,car.getCarNumber(),null,null,car.getKilometers(),0,false,0,0,0));
+                }
+            }.execute();
+        } catch (Exception e) {
+
+        }
+        homeFragment home = new homeFragment();
+        changeFragement(home);
     }
 
 

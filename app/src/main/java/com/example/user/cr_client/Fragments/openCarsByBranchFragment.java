@@ -30,12 +30,15 @@ public class openCarsByBranchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
         }
 
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        MainActivity.getSpinner().setVisibility(View.VISIBLE);
+        MainActivity.getText().setVisibility(View.VISIBLE);
         final String branch = getArguments().getString("branch");
         final View view =  inflater.inflate(R.layout.list_cars, container, false);
         try {
@@ -44,7 +47,7 @@ public class openCarsByBranchFragment extends Fragment {
                 protected void onPostExecute(final List<Car> car) {
                     super.onPostExecute(car);
                     if(car.isEmpty())
-                        Toast.makeText(getActivity(), "User is not exsist", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Sorry but not exists cars", Toast.LENGTH_SHORT).show();
                     else{
 
 

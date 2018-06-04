@@ -27,76 +27,25 @@ import java.util.List;
 
 
 
-public class branchFragment extends Fragment {
+public class openCarFragment extends Fragment {
 
 
-    public branchFragment() {
+    public openCarFragment() {
 
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        MainActivity.getSpinner().setVisibility(View.VISIBLE);
+        MainActivity.getText().setVisibility(View.VISIBLE);
         final View view = inflater.inflate(R.layout.list_branch, container, false);
-
-        try {
-            new AsyncTask<Void, Void,List<Branch>>() {
-                @Override
-                protected void onPostExecute(List<Branch> branch) {
-                    super.onPostExecute(branch);
-                    ArrayList<String> address = new ArrayList<>();
-                    address.add("choose");
-                    for (Branch item:branch)
-                        address.add(item.getAdress());
-                   // ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                     //       android.R.layout.simple_list_item_1, android.R.id.text1, address );
-
-
-                       /* @Override
-                        public View getView(int position, View convertView, ViewGroup parent) {
-                            if(position % 2==1)
-                            {
-                                convertView.setBackgroundResource(Color.alpha(1));
-                            }
-                            else
-                                {
-                            convertView.setBackgroundResource(Color.alpha(2));
-                            }
-                            return view;}
-                    };*/
-
-                    Spinner branchSpiner= (Spinner)view.findViewById(R.id.spinnerBrunch);
-                    branchSpiner.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, address));
-                    branchSpiner.setSelection(Adapter.NO_SELECTION,false);
-                    branchSpiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-                    {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            String branch = (String) adapterView.getAdapter().getItem(i);
-                            openCarsByBranchFragment fragment = new openCarsByBranchFragment();
-                            Bundle args = new Bundle();
-                            args.putString("branch", branch);
-                            fragment.setArguments(args);
-                            ((MainActivity) getActivity()).changeFragement(fragment);
-                        }
-                        @Override
-                        public void onNothingSelected(AdapterView<?> arg0){}
-                    });
-                }
-                @Override
-                protected List<Branch> doInBackground(Void... params) {
-                    return DBManagerFactory.getManager().getAllBrunches();
-                }
-            }.execute();
-        } catch (Exception e) {
-
-        }
-
 
         try {
             new AsyncTask<Void, Void,List<Car>>() {
@@ -130,7 +79,7 @@ public class branchFragment extends Fragment {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 Car car1 = (Car) adapterView.getAdapter().getItem(i);
-                                openOrder(car1);
+                                ((MainActivity)getActivity()).openOrder(car1);
                             }
 
                         });
@@ -149,29 +98,6 @@ public class branchFragment extends Fragment {
         return view;
     }
 
-    public void openOrder(final Car car)
-    {
 
-        try {
-            new AsyncTask<Void, Void,Boolean>() {
-                @Override
-                protected void onPostExecute(Boolean flag) {
-                    super.onPostExecute(false);
-                    if(flag) {
-                        Toast.makeText(getActivity(), "Order Open", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                @Override
-                protected Boolean doInBackground(Void... params) {
-                    return DBManagerFactory.getManager().openOrder(new Order(LogIn.getIdCustomer(),null,car.getCarNumber(),null,null,car.getKilometers(),0,false,0,0,0));
-                }
-            }.execute();
-        } catch (Exception e) {
-
-        }
-        homeFragment home = new homeFragment();
-        ((MainActivity) getActivity()).changeFragement(home);
-    }
 
 }
