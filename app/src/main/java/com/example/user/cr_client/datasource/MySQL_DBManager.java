@@ -30,19 +30,17 @@ public class MySQL_DBManager implements DB_manager {
     private String WEB_URL ="http://crottenb.vlab.jct.ac.il/CR/";
     private List<Customer> customerList;
     private List<Branch> branchList;
-    private List<Order> orderList;
     private List<Order> closeList = new ArrayList<Order>();;
     private List<CarModel> modelList;
     private List<Car> carList;
-    private List<Order> openOrderList;
+    private List<Order> openOrderList=new ArrayList<Order>();
 
     public MySQL_DBManager(){
         customerList = getAllCustomers();
         branchList = getAllBrunches();
         carList = getAllCars();
-        orderList = getAllOpenOrders();
         modelList = getAllModels();
-        openOrderList = getAllOpenOrders();
+
 
     }
 
@@ -285,8 +283,6 @@ public class MySQL_DBManager implements DB_manager {
     @Override
     public List<Order> getAllOpenOrders() {
 
-        if(orderList != null)
-            return orderList;
         List<Order> result = new ArrayList<Order>();
         try
         {
@@ -328,7 +324,7 @@ public class MySQL_DBManager implements DB_manager {
         } catch (Exception e) {
             //Log.w( Constants.Log.APP_LOG, e.getMessage() );
         }
-        orderList.add(values);
+
         openOrderList.add(values);
         return true;
 
@@ -348,7 +344,6 @@ public class MySQL_DBManager implements DB_manager {
         } catch (Exception e) {
             //Log.w( Constants.Log.APP_LOG, e.getMessage() );
         }
-        orderList.add(values);
         closeList.add(values);
         return true;
     }

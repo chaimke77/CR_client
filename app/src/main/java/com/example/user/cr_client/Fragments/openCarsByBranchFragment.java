@@ -1,5 +1,8 @@
 package com.example.user.cr_client.Fragments;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,39 +49,59 @@ public class openCarsByBranchFragment extends Fragment {
                 @Override
                 protected void onPostExecute(final List<Car> car) {
                     super.onPostExecute(car);
-                    if(car.isEmpty())
+                    if (car.isEmpty())
                         Toast.makeText(getActivity(), "Sorry but not exists cars", Toast.LENGTH_SHORT).show();
-                    else{
+                    else {
 
 
-                    ArrayAdapter<Car> adapter = new ArrayAdapter<Car>(getActivity(),
-                            android.R.layout.simple_list_item_1, android.R.id.text1, car){
-                        @Override
-                        public View getView(int position, View convertView, ViewGroup parent) {
-                            if (convertView == null)
-                                convertView = View.inflate(getContext(), R.layout.item_car_view, null);
-                            TextView numModel = (TextView) convertView.findViewById(R.id.modelNumView);
-                            TextView km = (TextView) convertView.findViewById(R.id.kilometersView);
-                            TextView numCar = (TextView) convertView.findViewById(R.id.carNumberView);
+                        ArrayAdapter<Car> adapter = new ArrayAdapter<Car>(getActivity(),
+                                android.R.layout.simple_list_item_1, android.R.id.text1, car) {
+                            @Override
+                            public View getView(int position, View convertView, ViewGroup parent) {
+                                if (convertView == null)
+                                    convertView = View.inflate(getContext(), R.layout.item_car_view, null);
+                                TextView numModel = (TextView) convertView.findViewById(R.id.modelNumView);
+                                TextView km = (TextView) convertView.findViewById(R.id.kilometersView);
+                                TextView numCar = (TextView) convertView.findViewById(R.id.carNumberView);
 
-                            numModel.setText("Model Number: " + ((Long) car.get(position).getModel()).toString());
-                            km.setText("Km: " + ((Long) car.get(position).getKilometers()).toString());
-                            numCar.setText("Car Number: " + ((Long) car.get(position).getCarNumber()).toString());
-                            return convertView;
-                        }
-                    };
-                    ListView listCars = (ListView) view.findViewById(R.id.list_item_cars);
-                    listCars.setAdapter(adapter);
-                    listCars.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Car car1 = (Car) adapterView.getAdapter().getItem(i);
-                           openOrder(car1);
-                        }
+                                numModel.setText("Model Number: " + ((Long) car.get(position).getModel()).toString());
+                                km.setText("Km: " + ((Long) car.get(position).getKilometers()).toString());
+                                numCar.setText("Car Number: " + ((Long) car.get(position).getCarNumber()).toString());
+                                return convertView;
+                            }
+                        };
+                        ListView listCars = (ListView) view.findViewById(R.id.list_item_cars);
+                        listCars.setAdapter(adapter);
+                        listCars.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                final Car car1 = (Car) adapterView.getAdapter().getItem(i);
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                                AlertDialog.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which) {
+                                            case Dialog.BUTTON_NEGATIVE:
+                                                break;
+                                            case Dialog.BUTTON_POSITIVE:
+                                                //openOrder(car1);
+                                                ((MainActivity) getActivity()).openOrder(car1);
+                                                break;
+                                        }
+                                    }
+                                };
+                                alertDialogBuilder.setMessage("Do you want to order this car?");
+                                alertDialogBuilder.setPositiveButton("Ok", onClickListener);
+                                alertDialogBuilder.setNegativeButton("Cancel ", onClickListener);
+                                AlertDialog alertDialog = alertDialogBuilder.create();
+                                alertDialog.show();
+                            }
+                        });
 
-                    });
+
+                    }
                 }
-                }
+
 
                 @Override
                 protected List<Car> doInBackground(Void... params) {
@@ -93,7 +116,7 @@ public class openCarsByBranchFragment extends Fragment {
     }
 
 
-    public void openOrder(final Car car)
+    /*public void openOrder(final Car car)
     {
 
         try {
@@ -102,7 +125,7 @@ public class openCarsByBranchFragment extends Fragment {
                 protected void onPostExecute(Boolean flag) {
                     super.onPostExecute(false);
                     if(flag) {
-                        Toast.makeText(getActivity(), "Order Open", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getActivity(), "Order Open", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -114,8 +137,7 @@ public class openCarsByBranchFragment extends Fragment {
         } catch (Exception e) {
 
         }
-        homeFragment home = new homeFragment();
-        ((MainActivity) getActivity()).changeFragement(home);
-    }
+
+    }*/
 
 }

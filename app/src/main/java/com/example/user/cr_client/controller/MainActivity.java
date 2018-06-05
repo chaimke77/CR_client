@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 protected void onPostExecute(Boolean flag) {
                     super.onPostExecute(false);
                     if(flag) {
-                       Toast.makeText(getBaseContext(), "Order Open", Toast.LENGTH_SHORT).show();
+                     //  Toast.makeText(getBaseContext(), "Order Open", Toast.LENGTH_SHORT).show();
                     }
                 }
 

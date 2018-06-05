@@ -1,5 +1,8 @@
 package com.example.user.cr_client.Fragments;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -41,24 +44,23 @@ public class openCarFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MainActivity.getSpinner().setVisibility(View.VISIBLE);
         MainActivity.getText().setVisibility(View.VISIBLE);
         final View view = inflater.inflate(R.layout.list_branch, container, false);
 
         try {
-            new AsyncTask<Void, Void,List<Car>>() {
+            new AsyncTask<Void, Void, List<Car>>() {
                 @Override
                 protected void onPostExecute(final List<Car> car) {
                     super.onPostExecute(car);
-                    if(car.isEmpty())
+                    if (car.isEmpty())
                         Toast.makeText(getActivity(), "Sorry but not exists cars", Toast.LENGTH_SHORT).show();
-                    else{
+                    else {
 
 
                         ArrayAdapter<Car> adapter = new ArrayAdapter<Car>(getActivity(),
-                                android.R.layout.simple_list_item_1, android.R.id.text1, car){
+                                android.R.layout.simple_list_item_1, android.R.id.text1, car) {
                             @Override
                             public View getView(int position, View convertView, ViewGroup parent) {
                                 if (convertView == null)
@@ -78,10 +80,28 @@ public class openCarFragment extends Fragment {
                         listCars.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                Car car1 = (Car) adapterView.getAdapter().getItem(i);
-                                ((MainActivity)getActivity()).openOrder(car1);
+                                final Car car1 = (Car) adapterView.getAdapter().getItem(i);
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                                AlertDialog.OnClickListener onClickListener = new DialogInterface.OnClickListener()
+                                {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        switch (which) {
+                                            case Dialog.BUTTON_NEGATIVE:
+                                                break;
+                                            case Dialog.BUTTON_POSITIVE:
+                                                openOrder(car1);
+                                                //((MainActivity)getActivity()).openOrder(car1);
+                                                break;
+                                        }
+                                    }
+                                };
+                                alertDialogBuilder.setMessage("Do you want to order this car?");
+                                alertDialogBuilder.setPositiveButton("Ok", onClickListener);
+                                alertDialogBuilder.setNegativeButton("Cancel ", onClickListener);
+                                AlertDialog alertDialog = alertDialogBuilder.create();
+                                alertDialog.show();
                             }
-
                         });
                     }
                 }
@@ -97,4 +117,29 @@ public class openCarFragment extends Fragment {
 
         return view;
     }
+
+    public void openOrder(final Car car) {
+
+        try {
+            new AsyncTask<Void, Void, Boolean>() {
+                @Override
+                protected void onPostExecute(Boolean flag) {
+                    super.onPostExecute(false);
+                    if (flag) {
+                        Toast.makeText(getActivity(), "Order Open", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                protected Boolean doInBackground(Void... params) {
+                    return DBManagerFactory.getManager().openOrder(new Order(LogIn.getIdCustomer(), null, car.getCarNumber(), null, null, car.getKilometers(), 0, false, 0, 0, 0));
+                }
+            }.execute();
+        } catch (Exception e) {
+
+        }
+
+    }
+
 }
+
+
