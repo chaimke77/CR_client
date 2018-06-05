@@ -116,7 +116,7 @@ public class openCarsByBranchFragment extends Fragment {
     }
 
 
-    /*public void openOrder(final Car car)
+   /* public void openOrder(final Car car)
     {
 
         try {
@@ -125,7 +125,7 @@ public class openCarsByBranchFragment extends Fragment {
                 protected void onPostExecute(Boolean flag) {
                     super.onPostExecute(false);
                     if(flag) {
-                       // Toast.makeText(getActivity(), "Order Open", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Order Open", Toast.LENGTH_SHORT).show();
                     }
                 }
 

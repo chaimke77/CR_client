@@ -90,8 +90,8 @@ public class openCarFragment extends Fragment {
                                             case Dialog.BUTTON_NEGATIVE:
                                                 break;
                                             case Dialog.BUTTON_POSITIVE:
-                                                openOrder(car1);
-                                                //((MainActivity)getActivity()).openOrder(car1);
+                                                //openOrder(car1);
+                                                ((MainActivity)getActivity()).openOrder(car1);
                                                 break;
                                         }
                                     }
@@ -118,7 +118,7 @@ public class openCarFragment extends Fragment {
         return view;
     }
 
-    public void openOrder(final Car car) {
+   /* public void openOrder(final Car car) {
 
         try {
             new AsyncTask<Void, Void, Boolean>() {
@@ -138,7 +138,7 @@ public class openCarFragment extends Fragment {
 
         }
 
-    }
+    }*/
 
 }
 
