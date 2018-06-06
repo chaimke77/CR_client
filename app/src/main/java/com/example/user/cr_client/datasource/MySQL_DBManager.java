@@ -338,7 +338,7 @@ public class MySQL_DBManager implements DB_manager {
             String url = WEB_URL + "closeOrders.php" ;
             final ContentValues v = new ContentValues();
             v.put( "_id", values.getOrderNum() );
-            v.put( "km_finish", values.getKilometerStart() );
+            v.put( "km_finish", values.getKilometerFinish() );
             v.put( "date_finish", currentDateandTime);
             PHPtools.POST( url, v );
         } catch (Exception e) {

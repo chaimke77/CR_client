@@ -5,13 +5,16 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,10 +80,15 @@ public class myCarFragment extends Fragment {
                         ListView listOrders = (ListView) view.findViewById(R.id.list_item_cars);
                         listOrders.setAdapter(adapter);
                         listOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                             @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            public void onItemClick(AdapterView<?> adapterView, final View view, int i, long l) {
                                 final Order order1 = (Order) adapterView.getAdapter().getItem(i);
+                                final EditText input = new EditText(getContext());
+                                input.setHint("Please enter current km");
                                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                                alertDialogBuilder.setView(R.layout.close_order_dialog);
+                                alertDialogBuilder.setView(input);
                                 AlertDialog.OnClickListener onClickListener = new DialogInterface.OnClickListener()
                                 {
                                     @Override
@@ -89,7 +97,7 @@ public class myCarFragment extends Fragment {
                                             case Dialog.BUTTON_NEGATIVE:
                                                 break;
                                             case Dialog.BUTTON_POSITIVE:
-                                                //openOrder(car1);
+                                                order1.setKilometerFinish(Long.parseLong(input.getText().toString()));
                                                 ((MainActivity)getActivity()).closeOrder(order1);
                                                 break;
                                         }

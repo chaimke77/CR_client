@@ -51,27 +51,13 @@ public class homeFragment extends Fragment  implements View.OnClickListener  {
     public void onClick(View v) {
         if(v==tel)
         {
-            startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "0552230150", null)));
+            ((MainActivity)getActivity()).phone();
+
         }
         if(v==mail)
         {
-            String[] TO = {"chaimke77@gmail.com"};
+            ((MainActivity)getActivity()).sendEmail();
 
-            Intent emailIntent = new Intent(Intent.ACTION_SEND);
-
-            emailIntent.setData(Uri.parse("mailto:"));
-            emailIntent.setType("text/plain");
-
-
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-            emailIntent.setType("message/rfc822");
-            try {
-
-                startActivity(Intent.createChooser(emailIntent, "Send mail..."));
-
-            } catch (android.content.ActivityNotFoundException ex) {
-
-            }
         }
 
     }

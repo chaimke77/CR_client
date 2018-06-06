@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.commit();
     }
 
-    protected void sendEmail() {
+    public void sendEmail() {
 
 
         String[] TO = {"chaimke77@gmail.com"};
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    protected void phone() {
+    public void phone() {
         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", "0552230150", null)));
     }
 
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 protected Boolean doInBackground(Void... params) {
-                    return DBManagerFactory.getManager().closeOrder(new Order(LogIn.getIdCustomer(),null,order.getNumOfCars(),null,null,order.getKilometerStart(),0,false,0,0,order.getOrderNum()));
+                    return DBManagerFactory.getManager().closeOrder(new Order(LogIn.getIdCustomer(),null,order.getNumOfCars(),null,null,order.getKilometerStart(),order.getKilometerFinish(),false,0,0,order.getOrderNum()));
                 }
             }.execute();
         } catch (Exception e) {
