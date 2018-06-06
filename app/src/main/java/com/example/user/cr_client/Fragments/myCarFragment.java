@@ -87,7 +87,6 @@ public class myCarFragment extends Fragment {
                                 final EditText input = new EditText(getContext());
                                 input.setHint("Please enter current km");
                                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-                                alertDialogBuilder.setView(R.layout.close_order_dialog);
                                 alertDialogBuilder.setView(input);
                                 AlertDialog.OnClickListener onClickListener = new DialogInterface.OnClickListener()
                                 {
