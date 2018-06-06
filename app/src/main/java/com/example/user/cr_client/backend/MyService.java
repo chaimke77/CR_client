@@ -39,11 +39,11 @@ public class MyService extends Service {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm:ss");
                 String currentDateandTime = sdf.format(new Date());
-                if(DBManagerFactory.getManager().closedAtLastTenSeconds()) {
+                //if(DBManagerFactory.getManager().closedAtLastTenSeconds()) {
                     broadcastIntent.putExtra(PARAM_OUT_MSG, "Service Timer: " + currentDateandTime);
                     sendBroadcast(broadcastIntent);
                     Log.d("MyService", "End Sending message...");
-                }
+               // }
             }
         }, 1, 1000*10);
 

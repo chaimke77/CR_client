@@ -3,6 +3,7 @@ package com.example.user.cr_client.Fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -67,6 +68,9 @@ public class openCarsByBranchFragment extends Fragment {
                                 numModel.setText("Model Number: " + ((Long) car.get(position).getModel()).toString());
                                 km.setText("Km: " + ((Long) car.get(position).getKilometers()).toString());
                                 numCar.setText("Car Number: " + ((Long) car.get(position).getCarNumber()).toString());
+                                convertView.setBackgroundColor(position%2==0? Color.GRAY:Color.BLACK);
+
+
                                 return convertView;
                             }
                         };

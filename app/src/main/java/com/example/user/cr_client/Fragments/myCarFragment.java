@@ -10,31 +10,30 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.DBManagerFactory;
-import com.example.user.cr_client.controller.LogIn;
 import com.example.user.cr_client.controller.MainActivity;
-import com.example.user.cr_client.entities.Branch;
 import com.example.user.cr_client.entities.Car;
 import com.example.user.cr_client.entities.Order;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+/**
+ * Created by User on 06/06/2018.
+ */
 
+public class myCarFragment extends Fragment {
 
-public class openCarFragment extends Fragment {
-
-
-    public openCarFragment() {
+    public myCarFragment()
+    {
 
     }
 
@@ -46,43 +45,41 @@ public class openCarFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        MainActivity.getSpinner().setVisibility(View.VISIBLE);
-        MainActivity.getText().setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.BranchFilter).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.spinnerBrunch).setVisibility(View.GONE);
+
         final View view = inflater.inflate(R.layout.list_cars, container, false);
-
         try {
-            new AsyncTask<Void, Void, List<Car>>() {
+            new AsyncTask<Void, Void, List<Order>>() {
                 @Override
-                protected void onPostExecute(final List<Car> car) {
-                    super.onPostExecute(car);
-                    if (car.isEmpty())
-                        Toast.makeText(getActivity(), "Sorry but not exists cars", Toast.LENGTH_SHORT).show();
+                protected void onPostExecute(final List<Order> order) {
+                    super.onPostExecute(order);
+                    if (order.isEmpty())
+                        Toast.makeText(getActivity(), "Not exists orders", Toast.LENGTH_SHORT).show();
                     else {
-
-
-                        ArrayAdapter<Car> adapter = new ArrayAdapter<Car>(getActivity(),
-                                android.R.layout.simple_list_item_1, android.R.id.text1, car) {
+                        ArrayAdapter<Order> adapter = new ArrayAdapter<Order>(getActivity(),
+                                android.R.layout.simple_list_item_1, android.R.id.text1, order) {
                             @Override
                             public View getView(int position, View convertView, ViewGroup parent) {
                                 if (convertView == null)
-                                    convertView = View.inflate(getContext(), R.layout.item_car_view, null);
-                                TextView numModel = (TextView) convertView.findViewById(R.id.modelNumView);
-                                TextView km = (TextView) convertView.findViewById(R.id.kilometersView);
-                                TextView numCar = (TextView) convertView.findViewById(R.id.carNumberView);
+                                    convertView = View.inflate(getContext(), R.layout.item_order_view, null);
+                                TextView numOrder = (TextView) convertView.findViewById(R.id.orderNumV);
+                                TextView numCar = (TextView) convertView.findViewById(R.id.carNumberV);
+                                TextView date = (TextView) convertView.findViewById(R.id.dateV);
 
-                                numModel.setText("Model Number: " + ((Long) car.get(position).getModel()).toString());
-                                km.setText("Km: " + ((Long) car.get(position).getKilometers()).toString());
-                                numCar.setText("Car Number: " + ((Long) car.get(position).getCarNumber()).toString());
+                                numOrder.setText("Order number: " + ((Long) order.get(position).getOrderNum()).toString());
+                                numCar.setText("Car number: " + ((Long) order.get(position).getNumOfCars()).toString());
+                                date.setText("Start Date: " + ((Date)order.get(position).getRentalStart()).toString());
                                 convertView.setBackgroundColor(position%2==0? Color.GRAY:Color.BLACK);
                                 return convertView;
                             }
                         };
-                        ListView listCars = (ListView) view.findViewById(R.id.list_item_cars);
-                        listCars.setAdapter(adapter);
-                        listCars.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        ListView listOrders = (ListView) view.findViewById(R.id.list_item_cars);
+                        listOrders.setAdapter(adapter);
+                        listOrders.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                final Car car1 = (Car) adapterView.getAdapter().getItem(i);
+                                final Order order1 = (Order) adapterView.getAdapter().getItem(i);
                                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
                                 AlertDialog.OnClickListener onClickListener = new DialogInterface.OnClickListener()
                                 {
@@ -93,12 +90,12 @@ public class openCarFragment extends Fragment {
                                                 break;
                                             case Dialog.BUTTON_POSITIVE:
                                                 //openOrder(car1);
-                                                ((MainActivity)getActivity()).openOrder(car1);
+                                                ((MainActivity)getActivity()).closeOrder(order1);
                                                 break;
                                         }
                                     }
                                 };
-                                alertDialogBuilder.setMessage("Do you want to order this car?");
+                                alertDialogBuilder.setMessage("Do you want to close this order?");
                                 alertDialogBuilder.setPositiveButton("Ok", onClickListener);
                                 alertDialogBuilder.setNegativeButton("Cancel ", onClickListener);
                                 AlertDialog alertDialog = alertDialogBuilder.create();
@@ -109,8 +106,8 @@ public class openCarFragment extends Fragment {
                 }
 
                 @Override
-                protected List<Car> doInBackground(Void... params) {
-                    return DBManagerFactory.getManager().getAvailableCar();
+                protected List<Order> doInBackground(Void... params) {
+                    return DBManagerFactory.getManager().getAllOpenOrders();
                 }
             }.execute();
         } catch (Exception e) {
@@ -121,5 +118,3 @@ public class openCarFragment extends Fragment {
     }
 
 }
-
-

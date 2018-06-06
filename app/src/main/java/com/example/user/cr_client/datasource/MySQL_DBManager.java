@@ -290,7 +290,7 @@ public class MySQL_DBManager implements DB_manager {
             JSONArray array = new JSONObject(str).getJSONArray("orders");
             for (int i = 0; i < array.length(); i++)
             {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MMM-dd hh:mm:ss");
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 JSONObject jsonObject = array.getJSONObject(i);
                 Order order = new Order();
                 order.setOrderNum(jsonObject.getInt("_id"));
@@ -332,7 +332,7 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public Boolean closeOrder(Order values) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentDateandTime = sdf.format(new Date());
         try {
             String url = WEB_URL + "closeOrders.php" ;
@@ -360,27 +360,3 @@ public class MySQL_DBManager implements DB_manager {
 
 
 
-  /* @Override
-    public Customer ReturnCustumerById(String values) {
-        for (Customer item:customerList) {
-            if(item.getId().equals(values) )
-                return item;
-        }
-        return null;
-    }
-    @Override
-    public Car ReturnCarById(Long values) {
-        for (Car item:carList) {
-            if(item.getCarNumber()==values )
-                return item;
-        }
-        return null;
-    }
-    @Override
-    public Branch ReturnBranchByName(String values) {
-        for (Branch item:branchList) {
-            if(item.getAdress().equals(values) )
-                return item;
-        }
-        return null;
-   }*/

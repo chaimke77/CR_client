@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.user.cr_client.Fragments.myCarFragment;
 import com.example.user.cr_client.Fragments.openCarFragment;
 import com.example.user.cr_client.Fragments.openCarsByBranchFragment;
 import com.example.user.cr_client.Fragments.homeFragment;
@@ -81,8 +82,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     branchFilter=(TextView)findViewById(R.id.BranchFilter);
                     branchSpiner= (Spinner)findViewById(R.id.spinnerBrunch);
+                    branchSpiner.setPrompt("Select one option");
                     branchSpiner.setAdapter(new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_item, address));
-                    branchSpiner.setSelection(Adapter.NO_SELECTION,false);
+                    branchSpiner.setSelection(0);
                     branchSpiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
                     {
                         @Override
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         about = new homeFragment();
         car = new openCarFragment();
         branch = new openCarsByBranchFragment();
+        my = new myCarFragment();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -227,6 +230,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 protected Boolean doInBackground(Void... params) {
                     return DBManagerFactory.getManager().openOrder(new Order(LogIn.getIdCustomer(),null,car.getCarNumber(),null,null,car.getKilometers(),0,false,0,0,0));
+                }
+            }.execute();
+        } catch (Exception e) {
+
+        }
+        changeFragement(about);
+
+    }
+
+    public void closeOrder(final Order order)
+    {
+
+        try {
+            new AsyncTask<Void, Void,Boolean>() {
+                @Override
+                protected void onPostExecute(Boolean flag) {
+                    super.onPostExecute(false);
+                    if(flag) {
+                        Toast.makeText(getBaseContext(), "Order Close", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                protected Boolean doInBackground(Void... params) {
+                    return DBManagerFactory.getManager().closeOrder(new Order(LogIn.getIdCustomer(),null,order.getNumOfCars(),null,null,order.getKilometerStart(),0,false,0,0,order.getOrderNum()));
                 }
             }.execute();
         } catch (Exception e) {
