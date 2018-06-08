@@ -18,10 +18,8 @@ import android.widget.Toast;
 
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.DBManagerFactory;
-import com.example.user.cr_client.controller.LogIn;
 import com.example.user.cr_client.controller.MainActivity;
 import com.example.user.cr_client.entities.Car;
-import com.example.user.cr_client.entities.Order;
 
 import java.util.List;
 
@@ -43,7 +41,7 @@ public class openCarsByBranchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         MainActivity.getSpinner().setVisibility(View.VISIBLE);
         MainActivity.getText().setVisibility(View.VISIBLE);
-        final String branch = getArguments().getString("branch");
+        final String branch = this.getArguments().getString("branch");
         final View view =  inflater.inflate(R.layout.list_cars, container, false);
         try {
             new AsyncTask<Void, Void,List<Car>>() {

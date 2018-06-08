@@ -30,7 +30,8 @@ public class MySQL_DBManager implements DB_manager {
     private String WEB_URL ="http://crottenb.vlab.jct.ac.il/CR/";
     private List<Customer> customerList;
     private List<Branch> branchList;
-    private List<Order> closeList = new ArrayList<Order>();;
+    static private List<Order> closeList = new ArrayList<Order>();
+    //List<Order> getCloseList(){return closeList;}
     private List<CarModel> modelList;
     private List<Car> carList;
     private List<Order> openOrderList=new ArrayList<Order>();
