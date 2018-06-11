@@ -36,14 +36,14 @@ public class MyService extends Service {
                 Intent broadcastIntent = new Intent();
                 broadcastIntent.setAction(MainActivity.mBroadcastAction);
                 broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                int temp = DBManagerFactory.getManager().closedAtLastTenSeconds();
 
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy hh:mm:ss");
-                String currentDateandTime = sdf.format(new Date());
-                //if(DBManagerFactory.getManager().closedAtLastTenSeconds()) {
-                    broadcastIntent.putExtra(PARAM_OUT_MSG, "Service Timer: " + currentDateandTime);
+                if(temp!=0)
+                {
+                    broadcastIntent.putExtra(PARAM_OUT_MSG,temp+" order closed");
                     sendBroadcast(broadcastIntent);
                     Log.d("MyService", "End Sending message...");
-               // }
+                }
             }
         }, 1, 1000*10);
 

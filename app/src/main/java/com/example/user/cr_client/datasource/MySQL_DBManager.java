@@ -30,7 +30,7 @@ public class MySQL_DBManager implements DB_manager {
     private String WEB_URL ="http://crottenb.vlab.jct.ac.il/CR/";
     private List<Customer> customerList;
     private List<Branch> branchList;
-    private List<Order> closeList = new ArrayList<Order>();;
+    private List<Order> closeList = new ArrayList<Order>();
     private List<CarModel> modelList;
     private List<Car> carList;
     private List<Order> openOrderList=new ArrayList<Order>();
@@ -204,7 +204,7 @@ public class MySQL_DBManager implements DB_manager {
     }
 
     @Override
-    public void updateCarKM(int newKM, int carNum)
+    public void updateCarKM(Long newKM, Long carNum)
     {
         try {
             String url = WEB_URL + "updateCarKM.php" ;
@@ -350,12 +350,19 @@ public class MySQL_DBManager implements DB_manager {
 
 
     @Override
-    public Boolean closedAtLastTenSeconds() {
-        if(closeList.isEmpty())
+    public int closedAtLastTenSeconds() {
+        /*if(closeList.isEmpty())
             return false;
         closeList.clear();
-        return true;
+        return true;*/
+        int temp = closeList.size();
+        closeList.clear();
+        return temp;
+
     }
+
+    //@Override
+   // public List<Order> getCloseList(){return closeList;}
 }
 
 

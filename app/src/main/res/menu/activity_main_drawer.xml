@@ -10,10 +10,7 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_about"
             android:title="Adout" />
-        <item
-            android:id="@+id/nav_branch"
-            android:icon="@drawable/ic_branch"
-            android:title="Branches" />
+
         <item
             android:id="@+id/nav_available_car"
             android:icon="@drawable/ic_car"

@@ -16,15 +16,12 @@ import java.util.List;
 
 public interface DB_manager {
 
-    // Customer ReturnCustumerById(String values);
-    // Car ReturnCarById(Long values);
-    // Branch ReturnBranchByName(String values);
+
     boolean custumerExsits(String id, String name);
     boolean addCustomer(Customer values);
     List<Customer> getAllCustomers();
     List<Branch> getAllBrunches();
     List<Car> getAllCars();
-
     List<Car> getAvailableCar();
     List<Car> getAvailableCarOfBranch(String branch);
     List<Car> getAvailableCarOnKm();
@@ -34,6 +31,7 @@ public interface DB_manager {
     List<Order> getAllOpenOrders();
     Boolean openOrder(Order order);
     Boolean closeOrder(Order order);
-    Boolean closedAtLastTenSeconds();
-    void updateCarKM(int newKM, int carNum);
+    int closedAtLastTenSeconds();
+    void updateCarKM(Long newKM, Long carNum);
+    //List<Order> getCloseList();
 }

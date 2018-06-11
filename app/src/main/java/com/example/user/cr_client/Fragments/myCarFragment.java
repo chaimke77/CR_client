@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +87,7 @@ public class myCarFragment extends Fragment {
                                 final Order order1 = (Order) adapterView.getAdapter().getItem(i);
                                 final EditText input = new EditText(getContext());
                                 input.setHint("Please enter current km");
+                                input.setInputType(InputType.TYPE_CLASS_NUMBER);
                                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
                                 alertDialogBuilder.setView(input);
                                 AlertDialog.OnClickListener onClickListener = new DialogInterface.OnClickListener()
@@ -96,6 +98,10 @@ public class myCarFragment extends Fragment {
                                             case Dialog.BUTTON_NEGATIVE:
                                                 break;
                                             case Dialog.BUTTON_POSITIVE:
+                                                if(order1.getKilometerStart()>Long.parseLong(input.getText().toString())) {
+                                                    Toast.makeText(getContext(), "Error input", Toast.LENGTH_SHORT).show();
+                                                    break;
+                                                }
                                                 order1.setKilometerFinish(Long.parseLong(input.getText().toString()));
                                                 ((MainActivity)getActivity()).closeOrder(order1);
                                                 break;

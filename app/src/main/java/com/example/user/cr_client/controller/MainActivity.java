@@ -150,10 +150,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 onBackPressed();
                 changeFragement(about);
                 return true;
-            case R.id.nav_branch:
-                onBackPressed();
-                changeFragement(branch);
-                return true;
             case R.id.nav_available_car:
                 onBackPressed();
                 changeFragement(car);
@@ -254,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 @Override
                 protected Boolean doInBackground(Void... params) {
+                    DBManagerFactory.getManager().updateCarKM(order.getKilometerFinish(),order.getNumOfCars());
                     return DBManagerFactory.getManager().closeOrder(new Order(LogIn.getIdCustomer(),null,order.getNumOfCars(),null,null,order.getKilometerStart(),order.getKilometerFinish(),false,0,0,order.getOrderNum()));
                 }
             }.execute();
