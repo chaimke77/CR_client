@@ -44,7 +44,6 @@ public class MyService extends Service {
                 }
             }
         }, 1, 1000*10);
-
         return START_STICKY;
     }
 
