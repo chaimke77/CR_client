@@ -37,7 +37,6 @@ public class MyService extends Service {
                 broadcastIntent.setAction(MainActivity.mBroadcastAction);
                 broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
                 int temp = DBManagerFactory.getManager().closedAtLastTenSeconds();
-
                 if(temp!=0)
                 {
                     broadcastIntent.putExtra(PARAM_OUT_MSG,temp+" order closed");

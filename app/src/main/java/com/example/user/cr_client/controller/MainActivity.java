@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
 
-
         try {
             new AsyncTask<Void, Void,List<Branch>>() {
                 @Override
