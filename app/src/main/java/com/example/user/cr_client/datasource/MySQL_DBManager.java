@@ -351,18 +351,13 @@ public class MySQL_DBManager implements DB_manager {
 
     @Override
     public int closedAtLastTenSeconds() {
-        /*if(closeList.isEmpty())
-            return false;
-        closeList.clear();
-        return true;*/
+
         int temp = closeList.size();
         closeList.clear();
         return temp;
 
     }
 
-    //@Override
-   // public List<Order> getCloseList(){return closeList;}
 }
 
 
