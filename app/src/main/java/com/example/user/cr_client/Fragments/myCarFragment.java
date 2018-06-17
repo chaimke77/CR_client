@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +24,8 @@ import android.widget.Toast;
 import com.example.user.cr_client.R;
 import com.example.user.cr_client.backend.DBManagerFactory;
 import com.example.user.cr_client.controller.MainActivity;
-import com.example.user.cr_client.entities.Car;
 import com.example.user.cr_client.entities.Order;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -88,6 +87,9 @@ public class myCarFragment extends Fragment {
                                 final EditText input = new EditText(getContext());
                                 input.setHint("Please enter current km");
                                 input.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+                                input.setFilters(new InputFilter[]{new InputFilter.LengthFilter(12)});
+
                                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
                                 alertDialogBuilder.setView(input);
                                 AlertDialog.OnClickListener onClickListener = new DialogInterface.OnClickListener()
@@ -98,10 +100,16 @@ public class myCarFragment extends Fragment {
                                             case Dialog.BUTTON_NEGATIVE:
                                                 break;
                                             case Dialog.BUTTON_POSITIVE:
-                                                if(order1.getKilometerStart()>Long.parseLong(input.getText().toString())) {
+                                                if(input.getText().toString().equals(""))
+                                                {
                                                     Toast.makeText(getContext(), "Error input", Toast.LENGTH_SHORT).show();
                                                     break;
                                                 }
+                                                if((order1.getKilometerStart()>Long.parseLong(input.getText().toString()))) {
+                                                    Toast.makeText(getContext(), "Error input", Toast.LENGTH_SHORT).show();
+                                                    break;
+                                                }
+
                                                 order1.setKilometerFinish(Long.parseLong(input.getText().toString()));
                                                 ((MainActivity)getActivity()).closeOrder(order1);
                                                 break;
